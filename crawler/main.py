@@ -19,3 +19,4 @@ if __name__ == '__main__':
     crawler.get_num_word()
 
     #lay ra danh sach cac internal link
+    crawler.get_internal_link_list()
