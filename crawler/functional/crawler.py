@@ -4,12 +4,13 @@ import html5lib
 
 
 def is_internal_link(url):
-    if (url.find('http') < 0) or (url.find('//amis.misa.vn') > 0) :
+    if (url.find('http') < 0) or (url.find('//amis.misa.vn') > 0):
         return True
     return False
 
+
 def is_external_link(url):
-    if (url.find('http') > 0) and (url.find('//amis.misa.vn') < 0) :
+    if (url.find('http') >= 0) and (url.find('//amis.misa.vn') < 0):
         return True
     return False
 
@@ -44,7 +45,6 @@ class Crawler:
         internal_a_list = self.html_response.find_all('a', href=True)
         links = []
         for a_tag in internal_a_list:
-            #print(a_tag['href'])
             links.append(a_tag['href'])
         # filter internal link
         internal_links = []
@@ -56,7 +56,51 @@ class Crawler:
 
     def get_external_link_list(self):
         pass
+        external_a_list = self.html_response.find_all('a', href=True)
+        links = []
+        for a_tag in external_a_list:
+            links.append(a_tag['href'])
+        # filter external link
+        external_links = []
+        for link in links:
+            if is_external_link(link):
+                external_links.append(link)
 
+        print(external_links)
 
+    def get_tag_list(self):
+        pass
+        tag_tag_list = self.html_response.select(".td-tags a")
+        tags = []
+        if len(tag_tag_list) > 0:
+            for tag in tag_tag_list:
+                # print(tag)
+                tags.append(tag)
+        else:
+            print("don't have tag")
 
+    def index_or_no(self):
+        pass
+        meta_robots = self.html_response.find_all('meta', {'name': ['robots', 'googlebot', 'bingbot']})
+        for meta in meta_robots:
+            # print(meta['content'])
+            if meta['content'].find('noindex') >= 0:
+                # print(meta['content'])
+                return 'noindex'
+        return 'index'
 
+    def follow_or_no(self):
+        pass
+        meta_robots = self.html_response.find_all('meta', {'name': ['robots', 'googlebot', 'bingbot']})
+        for meta in meta_robots:
+            # print(meta['content'])
+            if meta['content'].find('nofollow') >= 0:
+                # print(meta['content'])
+                return 'nofollow'
+        return 'follow'
+
+    def get_hreflang(self):
+        pass
+        link_tags = self.html_response.find('link', {'hreflang': True})
+        # for link_tag in link_tags:
+        return link_tags['hreflang']
