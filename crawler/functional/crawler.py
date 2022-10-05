@@ -29,16 +29,16 @@ class Crawler:
         lst_category_name = []
         for cat in lst_category:
             lst_category_name.append(cat.get_text())
-        print(lst_category_name)
+        return lst_category_name
 
     def get_url(self):
         url_tag = self.html_response.find('meta', {'property': 'og:url'})
-        print(url_tag['content'])
+        return url_tag['content']
 
     def get_num_word(self):
         content_post = self.html_response.find('div', {'class': 'td-post-content'})
         num_word = len(content_post.text.split())
-        print(num_word)
+        return num_word
 
     def get_internal_link_list(self):
         pass
@@ -52,7 +52,7 @@ class Crawler:
             if is_internal_link(link):
                 internal_links.append(link)
 
-        print(internal_links)
+        return internal_links
 
     def get_external_link_list(self):
         pass
@@ -66,7 +66,7 @@ class Crawler:
             if is_external_link(link):
                 external_links.append(link)
 
-        print(external_links)
+        return external_links
 
     def get_tag_list(self):
         pass
@@ -76,8 +76,9 @@ class Crawler:
             for tag in tag_tag_list:
                 # print(tag)
                 tags.append(tag)
+            return tags
         else:
-            print("don't have tag")
+            return ("don't have tag")
 
     def index_or_no(self):
         pass
