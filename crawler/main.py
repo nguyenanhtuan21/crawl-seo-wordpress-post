@@ -55,23 +55,11 @@ if __name__ == '__main__':
         columnHeader = my_sheet.cell(row=1, column=listHeaders.index(header) + 1)
         columnHeader.value = header
     # Tạo cột số thứ tự
-    maxLength = len(crawler.get_external_link_list()) if len(crawler.get_external_link_list()) > len(crawler.get_internal_link_list()) else len(crawler.get_internal_link_list())
-    i = 0;
-    index = []
-    while(i< maxLength):
-        i +=1
-        index.append(i)
-
-    # Tậo code index
-    for i in index:
-        data = my_sheet.cell(row=i+1, column=1)
-        data.value = str(i)
-
+    data = my_sheet.cell(row=2, column=1)
+    data.value = 1
     # Tạo cột category
-    for category in crawler.get_list_category():
-        data = my_sheet.cell(row=crawler.get_list_category().index(category)+2, column=2)
-        data.value = category
-
+    data = my_sheet.cell(row=2, column=2)
+    data.value = crawler.listToString(crawler.get_list_category())
     # Tạo cột url
     urlData = my_sheet.cell(row=2, column=4)
     urlData.value = crawler.get_url()
@@ -81,19 +69,18 @@ if __name__ == '__main__':
     numberOfData.value = crawler.get_num_word()
 
     # Tạo cột internalUrl
-    for internalUrl in crawler.get_internal_link_list():
-        internalData = my_sheet.cell(row=crawler.get_internal_link_list().index(internalUrl)+2, column=6)
-        internalData.value = internalUrl
+
+    internalData = my_sheet.cell(row=2, column=6)
+    internalData.value = crawler.listToString(crawler.get_internal_link_list())
 
     # Tạo cột externalUrl
-    for externalUrl in crawler.get_external_link_list():
-        externalData = my_sheet.cell(row=crawler.get_external_link_list().index(externalUrl) + 2, column=7)
-        externalData.value = externalUrl
+
+    externalData = my_sheet.cell(row=2, column=7)
+    externalData.value = crawler.listToString(crawler.get_external_link_list())
 
     # Tạo cột tag
-    for tagList in crawler.get_tag_list():
-        tagListData = my_sheet.cell(row=crawler.get_tag_list().index(tagList)+2, column=8)
-        tagListData.value = str(tagList);
+    tagListData = my_sheet.cell(row=2, column=8)
+    tagListData.value = ','.join(str(tagData) for tagData in crawler.get_tag_list())
 
     # Tạo cột xác định index hay noindex
     isIndexData = my_sheet.cell(row=2, column=9)
@@ -121,10 +108,3 @@ if __name__ == '__main__':
 
     my_wb.save("crawl_data.xlsx")
     print('DataFrame is written to Excel File successfully.')
-
-
-
-
-
-
-
