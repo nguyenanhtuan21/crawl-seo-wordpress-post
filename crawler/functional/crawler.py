@@ -117,5 +117,7 @@ class Crawler:
         canonical_tag = self.html_response.find('link', {'rel': 'canonical'})
         return canonical_tag['href']
 
-
+    def listToString(self,s):
+        string = ", ".join(s)
+        return string;
 

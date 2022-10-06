@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (crawl-seo-wordpress-post)" project-jdk-type="Python SDK" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (crawl-seo-wordpress-post)" project-jdk-type="Python SDK" />
+>>>>>>> 9d08430080bc7917b447d43f678815d1474936c5
 </project>
