@@ -74,11 +74,10 @@ class Crawler:
         tags = []
         if len(tag_tag_list) > 0:
             for tag in tag_tag_list:
-                # print(tag)
-                tags.append(tag)
+                tags.append(tag.text)
             return tags
         else:
-            return ("don't have tag")
+            return ""
 
     def index_or_no(self):
         pass
