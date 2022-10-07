@@ -1,18 +1,16 @@
 import time
+
 from crawler.functional.crawler import Crawler
 import openpyxl
-import _thread
-
+import threading
 
 def open_file(path):
     f = open(path, "r")
-    result = f.read()
-    id_website = list(result.splitlines())
     list_crawler = []
-    for idData in id_website:
-        print(idData)
-        if idData != "":
-            crawler = Crawler("https://amis.misa.vn/" + idData)
+    for idData in f:
+        print(idData.strip())
+        if idData != '':
+            crawler = Crawler("https://amis.misa.vn/" + idData.strip())
             list_crawler.append(crawler)
 
     return list_crawler
@@ -24,10 +22,16 @@ def export_excel(path, i):
     list_headers = ["STT", "Chuyên mục", "Tác giả", "URL cuối", "Số lượng từ", "Danh sách Internal Link trong bài",
                     "Danh sách External Link trong bài", "Tag", "Index/NoIndex", "follow", "Ahref-Lang", "Meta Title",
                     "Meta Description", "Meta keyword", "canonical"]
-    index = 1
     list_crawl = open_file(path)
+    index = 1
+    for header in list_headers:
+        column_header = my_sheet.cell(row=1, column=list_headers.index(header) + 1)
+        column_header.value = header
+
     for idCrawler in list_crawl:
-        if str(idCrawler.check_link()) == "None":
+        if idCrawler.get_meta_description() == "404 - MISA AMIS":
+            print("next")
+        else:
             index += 1
             # Tạo cột số thứ tự
             data = my_sheet.cell(row=index, column=1)
@@ -76,24 +80,41 @@ def export_excel(path, i):
             # Tạo cột meta description
             meta_description_data = my_sheet.cell(row=index, column=13)
             meta_description_data.value = idCrawler.get_meta_description()
+            print(data.value)
 
             # Tạo cột canonicalUrl
             meta_canonical_data = my_sheet.cell(row=index, column=15)
             meta_canonical_data.value = idCrawler.get_canonical_link()
 
             my_wb.save("crawl_data" + i + ".xlsx")
-            print('DataFrame is written to Excel File successfully.')
-        else:
-            print("next")
-
 
 # main function
 if __name__ == '__main__':
     print("start export")
-    export_excel("idWebsite1.txt", "1")
-    export_excel("idWebsite2.txt", "2")
-    export_excel("idWebsite3.txt", "3")
-    export_excel("idWebsite4.txt", "4")
-    export_excel("idWebsite5.txt", "5")
-    export_excel("idWebsite6.txt", "6")
+    t1 = threading.Thread(target=export_excel, args=("idWebsite1.txt", "1",))
+    t1.start()
+    time.sleep(0.5)
+    t2 = threading.Thread(target=export_excel, args=("idWebsite2.txt", "2",))
+    t2.start()
+    time.sleep(0.5)
+    t3 = threading.Thread(target=export_excel, args=("idWebsite3.txt", "3",))
+    t3.start()
+    time.sleep(0.5)
+    t4 = threading.Thread(target=export_excel, args=("idWebsite4.txt", "4",))
+    t4.start()
+    time.sleep(0.5)
+    t5 = threading.Thread(target=export_excel, args=("idWebsite5.txt", "5",))
+    t5.start()
+    time.sleep(0.5)
+    t6 = threading.Thread(target=export_excel, args=("idWebsite6.txt", "6",))
+    t6.start()
+    time.sleep(0.5)
+
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    t5.join();
+    t6.join();
+
     print("end export")

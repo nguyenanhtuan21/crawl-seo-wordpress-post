@@ -117,10 +117,6 @@ class Crawler:
         canonical_tag = self.html_response.find('link', {'rel': 'canonical'})
         return canonical_tag['href']
 
-    def check_link(self):
-        pass
-        content = self.html_response.find('meta', {'content': '404 - MISA AMIS'})
-        return content
 
     @staticmethod
     def list_to_string(s):
