@@ -4,7 +4,8 @@ import html5lib
 
 
 def is_internal_link(url):
-    if ((url.find('http') < 0) or (url.find('//amis.misa.vn') > 0)) and (url != '#') and (url.find('tel', 0, 3) < 0) and (url.find('mailto', 0, 6) < 0):
+    if ((url.find('http') < 0) or (url.find('//amis.misa.vn') > 0)) and (url != '#') and (url.find('tel', 0, 3) < 0) \
+            and (url.find('mailto', 0, 6) < 0):
         return True
     return False
 
@@ -116,7 +117,12 @@ class Crawler:
         canonical_tag = self.html_response.find('link', {'rel': 'canonical'})
         return canonical_tag['href']
 
-    def listToString(self,s):
-        string = ", ".join(s)
-        return string;
+    def check_link(self):
+        pass
+        content = self.html_response.find('meta', {'content': '404 - MISA AMIS'})
+        return content
 
+    @staticmethod
+    def list_to_string(s):
+        string = ", ".join(s)
+        return string
