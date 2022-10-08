@@ -24,7 +24,10 @@ class Crawler:
 
     def get_meta_title(self):
         return self.html_response.title.string
-
+    def get_author(self):
+        lst_author = self.html_response.find_all('meta', {'itemprop': 'name'})
+        author = lst_author[0]['content']
+        return author
     def get_list_category(self):
         lst_category = self.html_response.find_all('a', {'class': 'entry-crumb'})
         lst_category_name = []
@@ -117,6 +120,17 @@ class Crawler:
         canonical_tag = self.html_response.find('link', {'rel': 'canonical'})
         return canonical_tag['href']
 
+    def get_date_published(self):
+        pass
+        lst_published = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
+        date_published = lst_published[0]['content']
+        return date_published
+
+    def get_date_modified(self):
+        pass
+        lst_modified = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
+        date_published = lst_modified[0]['content']
+        return date_published
 
     @staticmethod
     def list_to_string(s):

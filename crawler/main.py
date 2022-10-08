@@ -4,6 +4,7 @@ from crawler.functional.crawler import Crawler
 import openpyxl
 import threading
 
+
 def open_file(path):
     f = open(path, "r")
     list_crawler = []
@@ -20,8 +21,8 @@ def export_excel(path, i):
     my_wb = openpyxl.Workbook()
     my_sheet = my_wb.active
     list_headers = ["STT", "Chuyên mục", "Tác giả", "URL cuối", "Số lượng từ", "Danh sách Internal Link trong bài",
-                    "Danh sách External Link trong bài", "Tag", "Index/NoIndex", "follow", "Ahref-Lang", "Meta Title",
-                    "Meta Description", "Meta keyword", "canonical"]
+                    "Danh sách External Link trong bài", "Tag", "Index/NoIndex", "Follow/Nofollow", "Ahref-Lang", "Meta Title",
+                    "Meta Description", "Meta keyword", "Canonical", "Date Published", "Date Modified"]
     list_crawl = open_file(path)
     index = 1
     for header in list_headers:
@@ -39,6 +40,9 @@ def export_excel(path, i):
             # Tạo cột category
             data = my_sheet.cell(row=index, column=2)
             data.value = idCrawler.list_to_string(idCrawler.get_list_category())
+            # Tạo cột author
+            author_data = my_sheet.cell(row=index, column=3)
+            author_data.value = idCrawler.get_author()
             # Tạo cột url
             url_data = my_sheet.cell(row=index, column=4)
             url_data.value = idCrawler.get_url()
@@ -80,13 +84,21 @@ def export_excel(path, i):
             # Tạo cột meta description
             meta_description_data = my_sheet.cell(row=index, column=13)
             meta_description_data.value = idCrawler.get_meta_description()
-            print(data.value)
 
             # Tạo cột canonicalUrl
             meta_canonical_data = my_sheet.cell(row=index, column=15)
             meta_canonical_data.value = idCrawler.get_canonical_link()
 
+            # Tạo cột date published
+            date_publish_data = my_sheet.cell(row=index, column=16)
+            date_publish_data.value = idCrawler.get_date_published()
+
+            # Tạo cọt date modified
+            date_modified_data = my_sheet.cell(row=index, column=17)
+            date_modified_data.value = idCrawler.get_date_modified()
+
             my_wb.save("crawl_data" + i + ".xlsx")
+
 
 # main function
 if __name__ == '__main__':
@@ -94,27 +106,27 @@ if __name__ == '__main__':
     t1 = threading.Thread(target=export_excel, args=("idWebsite1.txt", "1",))
     t1.start()
     time.sleep(0.5)
-    t2 = threading.Thread(target=export_excel, args=("idWebsite2.txt", "2",))
-    t2.start()
-    time.sleep(0.5)
-    t3 = threading.Thread(target=export_excel, args=("idWebsite3.txt", "3",))
-    t3.start()
-    time.sleep(0.5)
-    t4 = threading.Thread(target=export_excel, args=("idWebsite4.txt", "4",))
-    t4.start()
-    time.sleep(0.5)
-    t5 = threading.Thread(target=export_excel, args=("idWebsite5.txt", "5",))
-    t5.start()
-    time.sleep(0.5)
-    t6 = threading.Thread(target=export_excel, args=("idWebsite6.txt", "6",))
-    t6.start()
-    time.sleep(0.5)
+    # t2 = threading.Thread(target=export_excel, args=("idWebsite2.txt", "2",))
+    # t2.start()
+    # time.sleep(0.5)
+    # t3 = threading.Thread(target=export_excel, args=("idWebsite3.txt", "3",))
+    # t3.start()
+    # time.sleep(0.5)
+    # t4 = threading.Thread(target=export_excel, args=("idWebsite4.txt", "4",))
+    # t4.start()
+    # time.sleep(0.5)
+    # t5 = threading.Thread(target=export_excel, args=("idWebsite5.txt", "5",))
+    # t5.start()
+    # time.sleep(0.5)
+    # t6 = threading.Thread(target=export_excel, args=("idWebsite6.txt", "6",))
+    # t6.start()
+    # time.sleep(0.5)
 
-    t1.join();
-    t2.join();
-    t3.join();
-    t4.join();
-    t5.join();
-    t6.join();
+    t1.join()
+    # t2.join()
+    # t3.join()
+    # t4.join()
+    # t5.join()
+    # t6.join()
 
     print("end export")
