@@ -24,10 +24,12 @@ class Crawler:
 
     def get_meta_title(self):
         return self.html_response.title.string
+
     def get_author(self):
-        lst_author = self.html_response.find_all('meta', {'itemprop': 'name'})
+        lst_author = self.html_response.find_all('meta', {'name': 'author'})
         author = lst_author[0]['content']
         return author
+
     def get_list_category(self):
         lst_category = self.html_response.find_all('a', {'class': 'entry-crumb'})
         lst_category_name = []
@@ -122,15 +124,19 @@ class Crawler:
 
     def get_date_published(self):
         pass
-        lst_published = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
+        lst_published = self.html_response.find_all('meta', {'property': 'article:published_time'})
         date_published = lst_published[0]['content']
         return date_published
 
     def get_date_modified(self):
         pass
-        lst_modified = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
-        date_published = lst_modified[0]['content']
-        return date_published
+        lst_modified = self.html_response.find_all('meta', {'property': 'article:modified_time'})
+        lst_modified1 = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
+        if(len(lst_modified) > 0):
+            date_modified = lst_modified[0]['content']
+        if(len(lst_modified1) > 0):
+            date_modified = lst_modified1[0]['content']
+        return date_modified
 
     @staticmethod
     def list_to_string(s):
