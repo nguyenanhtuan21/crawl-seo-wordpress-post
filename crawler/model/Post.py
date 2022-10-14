@@ -1,7 +1,8 @@
 # Declare post object for crawl data from WordPress
 
 class Post:
-    def __init__(self, order, category, url, word_num, internal_link, external_link, tag, index, ahref_lang, meta_title, meta_description, meta_keyword, canonical):
+    def __init__(self, order, category, url, word_num, internal_link, external_link, tag, index,
+                 ahref_lang, meta_title, meta_description, meta_keyword, canonical):
         self.order = order
         self.category = category
         self.url = url
