@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import html5lib
+# import html5lib
 
 
 def is_internal_link(url):
@@ -19,13 +19,13 @@ def is_external_link(url):
 class Crawler:
     def __init__(self, url):
         try:
-            html_text = requests.get(url)
+            html_text = requests.get(url, timeout=10)
             self.html_response = BeautifulSoup(html_text.text, 'lxml')
         except requests.exceptions.Timeout:
             self.html_response = "TIME OUT"
 
     def get_meta_title(self):
-        if self.html_response == "TIME OUT" :
+        if self.html_response == "TIME OUT":
             result = "No Data"
         else:
             result = self.html_response.title.string
@@ -51,11 +51,11 @@ class Crawler:
         return lst_category_name
 
     def get_url(self):
-       if self.html_response == "TIME OUT":
-           return "No Data"
-       else:
-           url_tag = self.html_response.find('meta', {'property': 'og:url'})
-           return url_tag['content']
+        if self.html_response == "TIME OUT":
+            return "No Data"
+        else:
+            url_tag = self.html_response.find('meta', {'property': 'og:url'})
+            return url_tag['content']
 
     def get_num_word(self):
         if self.html_response == "TIME OUT":
@@ -166,14 +166,15 @@ class Crawler:
             return date_published
 
     def get_date_modified(self):
+        date_modified = ""
         if self.html_response == "TIME OUT":
             return "No Data"
         else:
             lst_modified = self.html_response.find_all('meta', {'property': 'article:modified_time'})
             lst_modified1 = self.html_response.find_all('meta', {'itemprop': 'datePublished'})
-            if(len(lst_modified) > 0):
+            if len(lst_modified) > 0:
                 date_modified = lst_modified[0]['content']
-            if(len(lst_modified1) > 0):
+            if len(lst_modified1) > 0:
                 date_modified = lst_modified1[0]['content']
             return date_modified
 
